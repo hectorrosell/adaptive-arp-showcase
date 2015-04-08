@@ -52,7 +52,7 @@ $(document).ready(function () {
     $('#get-orientations-supported').html("<b>Supported orientations</b>: " + orientationsTxt);
     // Device
     var deviceInfo = device.getDeviceInfo();
-    $('#device').html("<b>Model</b>: " + deviceInfo.getModel() + "<br>" + "<b>Name</b>: " + deviceInfo.getName() + "<br>" + "<b>Uuid</b>: " + deviceInfo.getUuid() + "<br>" + "<b>Vendor</b>: " + deviceInfo.getVendor());
+    $('#device').html("<b>Model</b>: " + deviceInfo.getModel() + "<br/>" + "<b>Name</b>: " + deviceInfo.getName() + "<br/>" + "<b>Uuid</b>: " + deviceInfo.getUuid() + "<br/>" + "<b>Vendor</b>: " + deviceInfo.getVendor());
     // Asynchronous Method (callback) (getContacts)
     var callback = new Adaptive.ContactResultCallback(function onError(error) {
         $('#contacts-error').html("ERROR: " + error.toString()).show();
@@ -92,7 +92,7 @@ $(document).ready(function () {
     });
     function printLifecycleEvents(lifecycle) {
         var $textArea = $('#textarea-1');
-        $textArea.html($textArea.html() + formatTime(new Date()) + ': ' + lifecycle.getState().toString() + '\n');
+        $textArea.html($textArea.html() + formatTime(new Date()) + ': ' + lifecycle.getState().toString() + '<br/>');
     }
     function printDeviceOrientationEvents(event) {
         var $textArea = $('#textarea-1');

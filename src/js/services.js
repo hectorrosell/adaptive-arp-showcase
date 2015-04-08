@@ -5,29 +5,22 @@ function printServicesEvents(response) {
     $textArea.html($textArea.html() + response.getContent());
 }
 $(document).ready(function () {
-    /*var service:Adaptive.IService = Adaptive.AppRegistryBridge.getInstance().getServiceBridge();
-
-    var geonames:Adaptive.ServiceToken = service.getServiceTokenByUri('http://api.geonames.org/postalCodeLookupJSON');
-    var req:Adaptive.ServiceRequest = service.getServiceRequest(geonames);
-
-    var params:Adaptive.ServiceRequestParameter[] = [];
+    var service = Adaptive.AppRegistryBridge.getInstance().getServiceBridge();
+    var geonames = service.getServiceToken("geonames", "https://api.geonames.org", "/postalCodeLookupJSON", Adaptive.IServiceMethod.Get);
+    var req = service.getServiceRequest(geonames);
+    var params = [];
     params.push(new Adaptive.ServiceRequestParameter("postalcode", "6600"));
     params.push(new Adaptive.ServiceRequestParameter("country", "AT"));
     params.push(new Adaptive.ServiceRequestParameter("username", "demo"));
     req.setQueryParameters(params);
-
-    var callback:Adaptive.IServiceResultCallback = new Adaptive.ServiceResultCallback(
-        function onError(error:Adaptive.IServiceResultCallbackError) {
-            $('#services-error').html("ERROR: " + error.toString()).show();
-        },
-        function onResult(result:Adaptive.ServiceResponse) {
-            printServicesEvents(result);
-        },
-        function onWarning(result:Adaptive.ServiceResponse, warning:Adaptive.IServiceResultCallbackWarning) {
-            $('#services-warning').html("WARNING: " + warning.toString()).show();
-            printServicesEvents(result);
-        }
-    );
-    service.invokeService(req, callback);*/
+    var callback = new Adaptive.ServiceResultCallback(function onError(error) {
+        $('#services-error').html("ERROR: " + error.toString()).show();
+    }, function onResult(result) {
+        printServicesEvents(result);
+    }, function onWarning(result, warning) {
+        $('#services-warning').html("WARNING: " + warning.toString()).show();
+        printServicesEvents(result);
+    });
+    service.invokeService(req, callback);
 });
 //# sourceMappingURL=services.js.map

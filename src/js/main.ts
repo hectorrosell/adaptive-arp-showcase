@@ -64,9 +64,9 @@ $(document).ready(function () {
 
     // Device
     var deviceInfo:Adaptive.DeviceInfo = device.getDeviceInfo();
-    $('#device').html("<b>Model</b>: " + deviceInfo.getModel() + "<br>" +
-    "<b>Name</b>: " + deviceInfo.getName() + "<br>" +
-    "<b>Uuid</b>: " + deviceInfo.getUuid() + "<br>" +
+    $('#device').html("<b>Model</b>: " + deviceInfo.getModel() + "<br/>" +
+    "<b>Name</b>: " + deviceInfo.getName() + "<br/>" +
+    "<b>Uuid</b>: " + deviceInfo.getUuid() + "<br/>" +
     "<b>Vendor</b>: " + deviceInfo.getVendor());
 
 
@@ -131,7 +131,7 @@ $(document).ready(function () {
     function printLifecycleEvents(lifecycle:Adaptive.Lifecycle):void {
 
         var $textArea = $('#textarea-1');
-        $textArea.html($textArea.html() + formatTime(new Date()) + ': ' + lifecycle.getState().toString() + '\n');
+        $textArea.html($textArea.html() + formatTime(new Date()) + ': ' + lifecycle.getState().toString() + '<br/>');
     }
 
     function printDeviceOrientationEvents(event:Adaptive.RotationEvent):void {

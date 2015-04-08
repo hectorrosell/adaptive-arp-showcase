@@ -9,9 +9,9 @@ function printServicesEvents(response:Adaptive.ServiceResponse):void {
 
 $(document).ready(function() {
 
-    /*var service:Adaptive.IService = Adaptive.AppRegistryBridge.getInstance().getServiceBridge();
+    var service:Adaptive.IService = Adaptive.AppRegistryBridge.getInstance().getServiceBridge();
 
-    var geonames:Adaptive.ServiceToken = service.getServiceTokenByUri('http://api.geonames.org/postalCodeLookupJSON');
+    var geonames:Adaptive.ServiceToken = service.getServiceToken("geonames","https://api.geonames.org","/postalCodeLookupJSON",Adaptive.IServiceMethod.Get);
     var req:Adaptive.ServiceRequest = service.getServiceRequest(geonames);
 
     var params:Adaptive.ServiceRequestParameter[] = [];
@@ -32,7 +32,7 @@ $(document).ready(function() {
             printServicesEvents(result);
         }
     );
-    service.invokeService(req, callback);*/
+    service.invokeService(req, callback);
 
 });
 
