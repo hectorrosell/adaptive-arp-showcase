@@ -6,7 +6,7 @@
 - Clone/Fork or download the repository
 - Open a terminal and move to the download folder (where the **package.json** is located)
 - Run ```(sudo) npm install``` to install all the dependencies
-- Install **Grunt client** ```(sudo)npm i -g grunt-cli```
+- Install **Grunt client** ```(sudo) npm i -g grunt-cli```
 
 ## Development
 
