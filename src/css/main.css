@@ -181,3 +181,23 @@ p {
     overflow-y: scroll;
 }*/
 
+.imageContainer{
+    display: table-cell; 
+    vertical-align: middle 
+}
+ 
+.imageContainer img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 10em;
+    width: auto;
+}
+
+.done{
+  background: green !important;
+}
+
+.fail{
+  background: red !important;
+}

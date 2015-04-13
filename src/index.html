@@ -22,6 +22,7 @@
     <script type="text/javascript" src="js/adaptive/Adaptive.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/services.js"></script>
+    <script type="text/javascript" src="js/filesystem.js"></script>
     <!-- /build -->
 
 </head>
@@ -40,10 +41,15 @@
     <!-- /header -->
 
     <div data-iscroll="" data-role="content" class="ui-mini ui-content" role="main">
-
+        
         <h3 class="ui-bar ui-bar-b">Synchronous Methods</h3>
 
         <div class="ui-body">
+            
+            <div class="imageContainer">
+                <img src="./images/html5.png" alt="HTML5 logo">
+                <img src="http://www.informaticahack.es/wp-content/uploads/2014/11/html5js.png" alt="HTML5 logo">
+            </div>
             <p><span id="os-info"></span></p>
 
 
@@ -69,7 +75,8 @@
         <div class="ui-body">
             <div id="contacts-error" class="alert-panel ui-bar ui-bar-d ui-corner-all"></div>
             <div id="contacts-warning" class="alert-panel ui-bar ui-bar-e ui-corner-all"></div>
-            <ul id="contacts-lists" data-role="listview" data-inset="true" data-theme="c">
+            <div id="contacts-info" class="alert-panel ui-bar ui-bar-e ui-corner-all"></div>
+            <ul id="contacts-lists" data-role="listview" data-inset="true" data-theme="c">                
             </ul>
         </div>
 
@@ -86,6 +93,7 @@
     <div data-role="panel" id="left-panel" data-theme="a">
         <p class="ui-mini">Menu</p>
         <p class="ui-mini"><a href="#services">Services</a></p>
+        <p class="ui-mini"><a href="#file">FileSystem</a></p>
     </div>
     <!-- /panel -->
 
@@ -137,11 +145,46 @@
         <h3 class="ui-bar ui-bar-b">Services (callback)</h3>
 
         <div class="ui-body">
-
+            <p><label for="service-param">Service Param:</label></p>
+            <button id="internal-ajax" class="ui-btn">Call Internal Ajax</button>
+            <button id="external-ajax" class="ui-btn">Call External Ajax</button>
+            
+            <input type="text" name="service-param" id="service-param" value="">
+            <button id="invokeService" class="ui-btn">InvokeService</button>
+            
             <div id="services-error" class="alert-panel ui-bar ui-bar-d ui-corner-all" style="margin-bottom: 5px;"></div>
             <div id="services-warning" class="alert-panel ui-bar ui-bar-e ui-corner-all" style="margin-bottom: 5px;"></div>
-
+            <ul id="service-lists" data-role="listview" data-inset="true" data-theme="c"></ul>
             <p id="textarea-2"></p>
+        </div>
+
+    </div>
+    <!-- /content -->
+
+    <div data-role="footer" data-theme="a" data-position="fixed" data-id="footer" data-tap-toggle="false"
+         data-transition="none" class="ui-footer">
+        <h4 class="footer-text">&copy; 2015 Adaptive.me Forged with <span style="color: red">&hearts;</span> in Barcelona</h4>
+    </div>
+    <!-- /footer -->
+</div>
+<div id="file" data-role="page">
+    <div data-role="header" data-theme="a" data-position="fixed" data-id="header" data-tap-toggle="false" data-transition="none">
+        <h1 class="">Adaptive RT <span class="adaptive-version"></span></h1>
+        <a href="#home" data-transition="slide" data-theme="a" data-icon="carat-l" data-iconpos="notext" data-shadow="false" data-iconshadow="false" class="ui-nodisc-icon">Open left panel</a>
+    </div>
+    <!-- /header -->
+
+    <div data-iscroll="" data-role="content" class="ui-mini ui-content" role="main">
+
+        <h3 class="ui-bar ui-bar-b">Services (callback)</h3>
+
+        <div class="ui-body">
+            <h3>Folders</h3>
+            <p>Cache: <span id="cache"></span></p>
+            <p>Documents: <span id="documents"></span></p>
+            <p>Application: <span id="appFolder"></span></p>
+            <p>Protected: <span id="appProtectedFolder"></span></p>
+            <p>External: <span id="externalFolder"></span></p>            
         </div>
 
     </div>

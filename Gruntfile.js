@@ -1,16 +1,33 @@
 module.exports = function (grunt) {
 
+    
     /**
      * Individual configurations for all the tasks
      */
     grunt.initConfig({
-
-        dist_path: '../adaptive-arp-darwin/adaptive-arp-rt/App.Source/www',
+        dist_path: '../adaptive-arp-android/adaptive-arp-rt/mobile/src/main/assets/www',
 
         // Watcher: execute $grunt watch
         watch: {
-            files: ['src/js', 'src/css', 'src/'], // directories to watch
+            files: ['src/js/*.ts', 'src/css/*.css', 'src/*.html'], // directories to watch
             tasks: ['test'] // Task to execute on file change
+        },
+        
+        // Compile Typescript
+        ts: {
+          default : {
+            src: ["src/**/*.ts","src/*.ts", "!node_modules/**/*.ts"],
+            watch: 'src',
+            out: "src/main.min.js"
+              
+          }
+        },
+         typescript: {
+            base: {
+            src: ['src/js/**/*.ts'],
+            dest: 'src/js/',
+            options: { declaration: false, sourceMap: false, module: 'commonjs', target: 'es5', basePath: 'src/js/', }
+          }
         },
 
         // HTTP server. Starts a server in localhost pointing to www folder
@@ -135,6 +152,18 @@ module.exports = function (grunt) {
                 cwd: 'src/css/jquery.mobile/flat-theme/',
                 src: ['fonts/**/*.*', 'images/**/*.*'],
                 dest: '<%= dist_path %>/'
+            },
+            'config':{
+                expand: true,
+                cwd: './',
+                src: 'config/**/*.*',
+                dest: '<%= dist_path %>/../'
+            },
+            'images':{
+                expand: true,
+                cwd: 'src/',
+                src: 'images/**/*.*',
+                dest: '<%= dist_path %>/'
             }
         },
 
@@ -167,6 +196,7 @@ module.exports = function (grunt) {
         }
     });
 
+      
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-http-server');
@@ -178,11 +208,15 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-processhtml');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks("grunt-ts");
+    grunt.loadNpmTasks('grunt-typescript');
 
     /**
      * Default task when executing $grunt
      */
     grunt.registerTask('default', []);
+    
+    grunt.registerTask("ts", ["ts"]);
 
     /**
      * Server Task. Starts an http server to test the application for the www task $grunt server
@@ -195,6 +229,7 @@ module.exports = function (grunt) {
      * Testing task $grunt www or $grunt watch
      */
     grunt.registerTask('test', [
+        'typescript',
         'jshint',
         'csslint'
     ]);
@@ -204,6 +239,7 @@ module.exports = function (grunt) {
      */
     grunt.registerTask('dist', [
         'clean:www',
+        'typescript',
         'jshint',
         'csslint',
         'concat:js',
@@ -212,6 +248,8 @@ module.exports = function (grunt) {
         'cssmin',
         'copy:www-images',
         'copy:www-theme-images',
+        'copy:config',
+        'copy:images',
         'clean:www-js',
         'clean:www-css',
         'processhtml',

@@ -1,9 +1,19 @@
 /// <reference path="adaptive/Adaptive.d.ts" />
 /// <reference path="jquery.mobile/jquerymobile.d.ts" />
+var time;
+/**
+     * Utility native log function
+     * @param level Level of Logging
+     * @param message Message to be logged
+     */
+function log(level, message) {
+    Adaptive.AppRegistryBridge.getInstance().getLoggingBridge().logLevelCategoryMessage(level, "APPLICATION", message);
+}
 $(document).ready(function () {
     $('.alert-panel').hide();
     // Initialize text-inputs
     $("input").textinput();
+    $("#contacts-lists,#service-lists").listview();
     // Adaptive Bridges
     var os = Adaptive.AppRegistryBridge.getInstance().getOSBridge();
     var globalization = Adaptive.AppRegistryBridge.getInstance().getGlobalizationBridge();
@@ -14,6 +24,7 @@ $(document).ready(function () {
     var lifecycle = Adaptive.AppRegistryBridge.getInstance().getLifecycleBridge();
     var media = Adaptive.AppRegistryBridge.getInstance().getVideoBridge();
     var display = Adaptive.AppRegistryBridge.getInstance().getDisplayBridge();
+    var networkStatus = Adaptive.AppRegistryBridge.getInstance().getNetworkStatusBridge();
     // Adaptive version
     var version = Adaptive.AppRegistryBridge.getInstance().getAPIVersion();
     $('.adaptive-version').html(version);
@@ -55,19 +66,29 @@ $(document).ready(function () {
     $('#device').html("<b>Model</b>: " + deviceInfo.getModel() + "<br>" + "<b>Name</b>: " + deviceInfo.getName() + "<br>" + "<b>Uuid</b>: " + deviceInfo.getUuid() + "<br>" + "<b>Vendor</b>: " + deviceInfo.getVendor());
     // Asynchronous Method (callback) (getContacts)
     var callback = new Adaptive.ContactResultCallback(function onError(error) {
+        console.log(JSON.stringify(error));
+        log(Adaptive.ILoggingLogLevel.Error, error.toString());
         $('#contacts-error').html("ERROR: " + error.toString()).show();
+        $("#contacts-lists").listview('refresh');
     }, function onResult(contacts) {
+        log(Adaptive.ILoggingLogLevel.Debug, JSON.stringify(contacts));
         parseContacts(contacts);
+        $("#contacts-lists").listview('refresh');
     }, function onWarning(contacts, warning) {
+        console.log(JSON.stringify(warning));
+        log(Adaptive.ILoggingLogLevel.Warn, JSON.stringify(contacts));
         $('#contacts-warning').html("WARNING: " + warning.toString()).show();
         parseContacts(contacts);
+        $("#contacts-lists").listview('refresh');
     });
+    time = new Date();
     contact.getContactsForFields(callback, [Adaptive.IContactFieldGroup.PersonalInfo, Adaptive.IContactFieldGroup.ProfessionalInfo]);
     function parseContacts(contacts) {
+        $('#contacts-info').html("tooks " + (new Date().getTime() - time.getTime()) + " ms [" + contacts.length + "]").show();
         for (var i = 0; i < contacts.length; i++) {
             var per = contacts[i].getPersonalInfo();
             var pro = contacts[i].getProfessionalInfo();
-            $('#contacts-lists').append('<li><a href="#"><h2>' + per.getTitle().toString() + ' ' + per.getName() + ' ' + per.getLastName() + '</h2><p>' + pro.getJobTitle() + ' - ' + pro.getJobDescription() + '</p><p class="ui-li-aside">' + pro.getCompany() + '</p></a></li>');
+            $('#contacts-lists').append('<li><a href="#"><h2>' + (per.getName() ? per.getName().substr(0, 15) : "") + ' ' + (per.getLastName() ? per.getLastName().substr(0, 15) : "") + '</h2></a></li>');
         }
         $("#contacts-lists").listview('refresh');
     }
@@ -90,33 +111,35 @@ $(document).ready(function () {
         printDeviceOrientationEvents(event);
     }, function onWarning(event, warning) {
     });
+    var networkStatusListener = new Adaptive.NetworkStatusListener(function onError(error) {
+    }, function onResult(event) {
+        printNetworkStatusEvents(event);
+    }, function onWarning(event, warning) {
+    });
     function printLifecycleEvents(lifecycle) {
         var $textArea = $('#textarea-1');
-        $textArea.html($textArea.html() + formatTime(new Date()) + ': ' + lifecycle.getState().toString() + '\n');
+        $textArea.html($textArea.html() + "printLifecycleEvents:" + formatTime(new Date()) + ': ' + lifecycle.getState().toString() + '\n');
+    }
+    function printNetworkStatusEvents(event) {
+        var $textArea = $('#textarea-1');
+        $textArea.html($textArea.html() + "printNetworkStatusEvents:" + formatTime(new Date()) + ': ' + event.getNetwork().toString() + '\n');
     }
     function printDeviceOrientationEvents(event) {
         var $textArea = $('#textarea-1');
-        $textArea.html($textArea.html() + formatTime(new Date(event.getTimestamp())) + ': ' + event.getOrigin() + ' > ' + event.getDestination() + ' [' + event.getState() + ']\n');
+        $textArea.html($textArea.html() + "printDeviceOrientationEvents:" + formatTime(new Date(event.getTimestamp())) + ': ' + event.getOrigin() + ' > ' + event.getDestination() + ' [' + event.getState() + ']\n');
     }
     function formatTime(d) {
         var h = d.getHours() < 10 ? '0' + d.getHours() : d.getHours();
         var m = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes();
         var s = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds();
-        return h + ':' + m + ':' + s;
+        var a = 1;
+        return h + a + ':' + m + ':' + s;
     }
     lifecycle.addLifecycleListener(lifecycleListener);
     device.addDeviceOrientationListener(orientationListener);
     display.addDisplayOrientationListener(displayListener);
+    networkStatus.addNetworkStatusListener(networkStatusListener);
     //device.removeDeviceOrientationListener(orientationListener);
     //device.removeDeviceOrientationListeners();
     //device.addDeviceOrientationListener(orientationListener);
-    /**
-     * Utility native log function
-     * @param level Level of Logging
-     * @param message Message to be logged
-     */
-    function log(level, message) {
-        Adaptive.AppRegistryBridge.getInstance().getLoggingBridge().logLevelCategoryMessage(level, "APPLICATION", message);
-    }
 });
-//# sourceMappingURL=main.js.map
