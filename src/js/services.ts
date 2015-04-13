@@ -24,7 +24,7 @@ $(document).ready(function() {
         $.ajax({
           url: "http://httpbin.org/robots.txt",          
         }).done(function() {
-          $('#external-ajax').addClass( "done" );            
+          $('#external-ajax').addClass( "done" );
         }).fail(function(){
           $('#external-ajax').addClass( "fail" );
         });   
@@ -37,13 +37,16 @@ $(document).ready(function() {
     var callback:Adaptive.IServiceResultCallback = new Adaptive.ServiceResultCallback(
         function onError(error:Adaptive.IServiceResultCallbackError) {
             $('#services-error').html("ERROR: " + error.toString()).show();
+            $('#invokeService').addClass( "fail" );
         },
-        function onResult(result:Adaptive.ServiceResponse) {
+        function onResult(result:Adaptive.ServiceResponse) {            
             printServicesEvents(result);
+            $('#invokeService').addClass( "done" );
         },
         function onWarning(result:Adaptive.ServiceResponse, warning:Adaptive.IServiceResultCallbackWarning) {
             $('#services-warning').html("WARNING: " + warning.toString()).show();
             printServicesEvents(result);
+            $('#invokeService').addClass( "done" );
         }
     );
     

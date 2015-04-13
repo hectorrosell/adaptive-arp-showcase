@@ -30,11 +30,14 @@ $(document).ready(function () {
     var req = service.getServiceRequest(httpbin);
     var callback = new Adaptive.ServiceResultCallback(function onError(error) {
         $('#services-error').html("ERROR: " + error.toString()).show();
+        $('#invokeService').addClass("fail");
     }, function onResult(result) {
         printServicesEvents(result);
+        $('#invokeService').addClass("done");
     }, function onWarning(result, warning) {
         $('#services-warning').html("WARNING: " + warning.toString()).show();
         printServicesEvents(result);
+        $('#invokeService').addClass("done");
     });
     $('#invokeService').click(function () {
         if (!token) {
