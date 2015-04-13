@@ -163,12 +163,12 @@ $(document).ready(function () {
     function printLifecycleEvents(lifecycle:Adaptive.Lifecycle):void {
 
         var $textArea = $('#textarea-1');
-        $textArea.html($textArea.html() + "printLifecycleEvents:" + formatTime(new Date()) + ': ' + lifecycle.getState().toString() + '\n');
+        $textArea.html($textArea.html() + "printLifecycleEvents:" + formatTime(new Date()) + ': ' + lifecycle.getState().toString() + '\n\n');
     }
     
     function printNetworkStatusEvents(event:Adaptive.NetworkEvent):void {
         var $textArea = $('#textarea-1');
-        $textArea.html($textArea.html() + "printNetworkStatusEvents:" + formatTime(new Date()) + ': ' + event.getNetwork().toString() + '\n');
+        $textArea.html($textArea.html() + "printNetworkStatusEvents:" + formatTime(new Date()) + ': ' + event.getNetwork().toString() + '\n\n');
     }
 
     function printDeviceOrientationEvents(event:Adaptive.RotationEvent):void {

@@ -145,16 +145,18 @@
         <h3 class="ui-bar ui-bar-b">Services (callback)</h3>
 
         <div class="ui-body">
+            ServicesRegistered:
+            <ul id="service-lists" data-role="listview" data-inset="true" data-theme="c"></ul>
             <p><label for="service-param">Service Param:</label></p>
-            <button id="internal-ajax" class="ui-btn">Call Internal Ajax</button>
-            <button id="external-ajax" class="ui-btn">Call External Ajax</button>
-            
             <input type="text" name="service-param" id="service-param" value="">
+            
+            <button id="internal-ajax" class="ui-btn">Call Registered Ajax</button>
+            <button id="external-ajax" class="ui-btn">Call Unregistered Ajax</button>                        
             <button id="invokeService" class="ui-btn">InvokeService</button>
             
             <div id="services-error" class="alert-panel ui-bar ui-bar-d ui-corner-all" style="margin-bottom: 5px;"></div>
             <div id="services-warning" class="alert-panel ui-bar ui-bar-e ui-corner-all" style="margin-bottom: 5px;"></div>
-            <ul id="service-lists" data-role="listview" data-inset="true" data-theme="c"></ul>
+            
             <p id="textarea-2"></p>
         </div>
 

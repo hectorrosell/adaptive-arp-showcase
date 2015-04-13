@@ -182,14 +182,11 @@ p {
 }*/
 
 .imageContainer{
-    display: table-cell; 
-    vertical-align: middle 
+    
 }
  
 .imageContainer img{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    display: none;    
     height: 10em;
     width: auto;
 }
