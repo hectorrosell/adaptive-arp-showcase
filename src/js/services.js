@@ -50,7 +50,7 @@ $(document).ready(function () {
     tokens = service.getServicesRegistered();
     var index = 0;
     tokens.forEach(function (t) {
-        $('#service-lists').append('<li><a href="javascript:run(' + (index++) + ')"><h2>' + t.functionName + '</h2></a></li>');
+        $('#service-lists').append('<li><a href="javascript:run(' + (index++) + ')"><h2>' + t.getServiceName + " -> " + t.functionName + '</h2></a></li>');
     });
     $('#service-lists').listview("refresh");
     /*var geonames:Adaptive.ServiceToken = service.getServiceToken("geonames","https://api.geonames.org","/postalCodeLookupJSON",Adaptive.IServiceMethod.Get);
