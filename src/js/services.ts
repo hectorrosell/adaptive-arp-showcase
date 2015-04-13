@@ -26,20 +26,50 @@ $(document).ready(function() {
           $('#external-ajax').addClass( "fail" );
         });   
     });
+    var service:Adaptive.IService = Adaptive.AppRegistryBridge.getInstance().getServiceBridge();
     
     $('#invokeService').click(function () {   
-        var service:Adaptive.IService = Adaptive.AppRegistryBridge.getInstance().getServiceBridge();
-        var tokens:Adaptive.ServiceToken[] = service.getServicesRegistered();
-        tokens.forEach(t => {
-            $('#service-lists').append('<li><a href="javascript:run(this)"><h2>'+t.functionName+'</h2></a></li>');
-        });
-        $('#service-lists').listview("refresh");
-
         var httpbin:Adaptive.ServiceToken = service.getServiceTokenByUri('http://httpbin.org/user-agent');
         var req:Adaptive.ServiceRequest = service.getServiceRequest(httpbin);
+        
+       
+    }
 
-        //var params:Adaptive.ServiceRequestParameter[] = [];    
-        //req.setQueryParameters(params);
+    var tokens:Adaptive.ServiceToken[] = service.getServicesRegistered();
+    tokens.forEach(t => {
+        $('#service-lists').append('<li><a href="javascript:run(this)"><h2>'+t.functionName+'</h2></a></li>');
+    });
+    $('#service-lists').listview("refresh");
+
+    
+
+    //var params:Adaptive.ServiceRequestParameter[] = [];    
+    //req.setQueryParameters(params);
+
+    var service:Adaptive.IService = Adaptive.AppRegistryBridge.getInstance().getServiceBridge();
+
+    var geonames:Adaptive.ServiceToken = service.getServiceToken("geonames","https://api.geonames.org","/postalCodeLookupJSON",Adaptive.IServiceMethod.Get);
+    var req:Adaptive.ServiceRequest = service.getServiceRequest(geonames);
+
+    var params:Adaptive.ServiceRequestParameter[] = [];
+    params.push(new Adaptive.ServiceRequestParameter("postalcode", "6600"));
+    params.push(new Adaptive.ServiceRequestParameter("country", "AT"));
+    params.push(new Adaptive.ServiceRequestParameter("username", "demo"));
+    req.setQueryParameters(params);
+
+    var callback:Adaptive.IServiceResultCallback = new Adaptive.ServiceResultCallback(
+        function onError(error:Adaptive.IServiceResultCallbackError) {
+            $('#services-error').html("ERROR: " + error.toString()).show();
+        },
+        function onResult(result:Adaptive.ServiceResponse) {
+            printServicesEvents(result);
+        },
+        function onWarning(result:Adaptive.ServiceResponse, warning:Adaptive.IServiceResultCallbackWarning) {
+            $('#services-warning').html("WARNING: " + warning.toString()).show();
+            printServicesEvents(result);
+        }
+    );
+    service.invokeService(req, callback);
 
         var callback:Adaptive.IServiceResultCallback = new Adaptive.ServiceResultCallback(
             function onError(error:Adaptive.IServiceResultCallbackError) {
