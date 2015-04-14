@@ -63,7 +63,7 @@ $(document).ready(function() {
     
     var index:number = 0;
     tokens.forEach(t => {
-        $('#service-lists').append('<li><a href="javascript:run('+(index++)+')"><h2>'+t.getServiceName+ " -> "+ t.functionName+'</h2></a></li>');
+        $('#service-lists').append('<li><a href="javascript:run('+(index++)+')"><h2>'+t.serviceName+ " -> "+ t.functionName+'</h2></a></li>');
     });
     $('#service-lists').listview("refresh");
     

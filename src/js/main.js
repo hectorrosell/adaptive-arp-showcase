@@ -7,6 +7,7 @@ var time;
      * @param message Message to be logged
      */
 function log(level, message) {
+    console.log(message);
     Adaptive.AppRegistryBridge.getInstance().getLoggingBridge().logLevelCategoryMessage(level, "APPLICATION", message);
 }
 $(document).ready(function () {
@@ -139,6 +140,15 @@ $(document).ready(function () {
     device.addDeviceOrientationListener(orientationListener);
     display.addDisplayOrientationListener(displayListener);
     networkStatus.addNetworkStatusListener(networkStatusListener);
+    var buttonListener = new Adaptive.ButtonListener(function onError(error) {
+        log(Adaptive.ILoggingLogLevel.Error, JSON.stringify(error));
+    }, function onResult(result) {
+        log(Adaptive.ILoggingLogLevel.Debug, JSON.stringify(result));
+    }, function onWarning(button, warning) {
+        log(Adaptive.ILoggingLogLevel.Warn, JSON.stringify(warning));
+        log(Adaptive.ILoggingLogLevel.Debug, JSON.stringify(button));
+    });
+    device.addButtonListener(buttonListener);
     //device.removeDeviceOrientationListener(orientationListener);
     //device.removeDeviceOrientationListeners();
     //device.addDeviceOrientationListener(orientationListener);
