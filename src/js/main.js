@@ -40,6 +40,9 @@ $(document).ready(function () {
     $('#open-browser').click(function () {
         browser.openInternalBrowser("http://www.google.es", "Google Page", "Back");
     });
+    $('#open-browser-modal').click(function () {
+        browser.openInternalBrowserModal("http://www.google.es", "Google Page", "Back");
+    });
     $('#open-external-browser').click(function () {
         browser.openExtenalBrowser("http://www.google.es");
     });

@@ -29,30 +29,115 @@ $(document).ready(function () {
         $('#file-feed').html(str).show();
     };
     var fileDescriptor = fileSystem.createFileDescriptor(fileSystem.getApplicationDocumentsFolder(), "test.txt");
+    fileFeed(JSON.stringify(fileDescriptor));
     if (!file.exists(fileDescriptor)) {
-        fileFeed(JSON.stringify(fileDescriptor) + " does NOT exist");
+        fileFeed(fileDescriptor.getName() + " does NOT exist");
         file.create(fileDescriptor, fileCallback);
     }
     else {
-        fileFeed(JSON.stringify(fileDescriptor) + " does exist");
+        fileFeed(fileDescriptor.getName() + " does exist");
     }
     if (file.canRead(fileDescriptor)) {
-        fileFeed(JSON.stringify(fileDescriptor) + " can be read");
+        fileFeed(fileDescriptor.getName() + " can be read");
     }
     else {
-        fileFeed(JSON.stringify(fileDescriptor) + " can NOT be read");
+        fileFeed(fileDescriptor.getName() + " can NOT be read");
     }
     if (file.canWrite(fileDescriptor)) {
-        fileFeed(JSON.stringify(fileDescriptor) + " can be written");
+        fileFeed(fileDescriptor.getName() + " can be written");
     }
     else {
-        fileFeed(JSON.stringify(fileDescriptor) + " can NOT be written");
+        fileFeed(fileDescriptor.getName() + " can NOT be written");
     }
-    file.delete(fileDescriptor, true);
-    if (!file.exists(fileDescriptor)) {
-        fileFeed(JSON.stringify(fileDescriptor) + " has been deleted");
+    var isDirectory = false;
+    if (file.isDirectory(fileDescriptor)) {
+        isDirectory = true;
+        fileFeed(fileDescriptor.getName() + " is Directory");
     }
     else {
-        fileFeed(JSON.stringify(fileDescriptor) + " has NOT been deleted");
+        fileFeed(fileDescriptor.getName() + " is File");
     }
+    var loadCallback = new Adaptive.FileDataLoadResultCallback(function onError(error) {
+        fileFeed("ERROR: " + JSON.stringify(error));
+    }, function onResult(result) {
+        fileFeed("CONTENT: " + result.decodeHex());
+        file.delete(fileDescriptor, isDirectory);
+        if (!file.exists(fileDescriptor)) {
+            fileFeed(fileDescriptor.getName() + " has been deleted");
+        }
+        else {
+            fileFeed(fileDescriptor.getName() + " has NOT been deleted");
+        }
+    }, function onWarning(result, warning) {
+        fileFeed("WARN: " + JSON.stringify(warning));
+        fileFeed("CONTENT: " + JSON.stringify(result));
+    });
+    var storeCallback = new Adaptive.FileDataStoreResultCallback(function onError(error) {
+    }, function onResult(result) {
+        file.getContent(result, loadCallback);
+    }, function onWarning(result, warning) {
+    });
+    file.setContent(fileDescriptor, "Hello World!".encodeHex(), storeCallback);
+    var directory = fileSystem.createFileDescriptor(fileSystem.getApplicationDocumentsFolder(), "test/a/b/");
+    file.mkDir(directory, true);
+    if (file.isDirectory(directory)) {
+        fileFeed(directory.getName() + " is Directory");
+    }
+    else {
+        fileFeed(directory.getName() + " is File");
+    }
+    var listCallback = new Adaptive.FileListResultCallback(function onError(error) {
+        fileFeed("ERROR: " + JSON.stringify(error));
+    }, function onResult(result) {
+        fileFeed("LIST: " + JSON.stringify(result));
+    }, function onError(result, warning) {
+        fileFeed("WARN: " + JSON.stringify(warning));
+        fileFeed("CONTENT: " + JSON.stringify(result));
+    });
+    var fileCallback0 = new Adaptive.FileResultCallback(function onError(error) {
+        fileFeed("ERROR: " + JSON.stringify(error));
+    }, function onResult(result) {
+        fileFeed(JSON.stringify(result));
+    }, function onWarning(result, warning) {
+        fileFeed(JSON.stringify(result));
+        fileFeed("WARN: " + JSON.stringify(warning));
+    });
+    var source = fileSystem.createFileDescriptor(fileSystem.getApplicationDocumentsFolder(), "test/test.txt");
+    file.create(source, fileCallback0);
+    directory = fileSystem.createFileDescriptor(fileSystem.getApplicationDocumentsFolder(), "test/");
+    file.listFiles(directory, listCallback);
+    var dest = fileSystem.createFileDescriptor(fileSystem.getApplicationDocumentsFolder(), "test/a/test.txt");
+    var fileCallback1 = new Adaptive.FileResultCallback(function onError(error) {
+        fileFeed("ERROR: " + JSON.stringify(error));
+    }, function onResult(result) {
+        fileFeed(JSON.stringify(result));
+    }, function onWarning(result, warning) {
+        fileFeed(JSON.stringify(result));
+        fileFeed("WARN: " + JSON.stringify(warning));
+    });
+    file.move(source, dest, true, true, fileCallback1);
+    var listCallback1 = new Adaptive.FileListResultCallback(function onError(error) {
+        fileFeed("ERROR: " + JSON.stringify(error));
+    }, function onResult(result) {
+        fileFeed("LIST: " + JSON.stringify(result));
+    }, function onError(result, warning) {
+        fileFeed("WARN: " + JSON.stringify(warning));
+        fileFeed("CONTENT: " + JSON.stringify(result));
+    });
+    file.listFiles(directory, listCallback1);
 });
+String.prototype.encodeHex = function () {
+    var bytes = [];
+    for (var i = 0; i < this.length; ++i) {
+        bytes.push(this.charCodeAt(i));
+    }
+    return bytes;
+};
+Array.prototype.decodeHex = function () {
+    var str = [];
+    var hex = this.toString().split(',');
+    for (var i = 0; i < hex.length; i++) {
+        str.push(String.fromCharCode(hex[i]));
+    }
+    return str.toString().replace(/,/g, "");
+};
