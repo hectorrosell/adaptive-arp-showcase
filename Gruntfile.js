@@ -5,7 +5,7 @@ module.exports = function (grunt) {
      * Individual configurations for all the tasks
      */
     grunt.initConfig({
-        dist_path: '../adaptive-arp-android/adaptive-arp-rt/mobile/src/main/assets/www',
+        dist_path: '../adaptive-arp-darwin/adaptive-arp-rt/App.Source/www',
 
         // Watcher: execute $grunt watch
         watch: {

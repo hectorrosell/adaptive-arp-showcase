@@ -6,8 +6,8 @@
     <!-- List of external services for the application. RegExp supported -->
     <services>
         <service name="geonames">
-            <end-point host="http://api.geonames.org" validation="None">
-                <path path="/postalCodeLookupJSON" type="RestJson">
+            <end-point host="^https?://api.geonames.org" validation="None">
+                <path path="/(.*)" type="RestJson">
                     <method method="Get"/>
                 </path>
             </end-point>
@@ -67,8 +67,10 @@
     <!-- List of external resources for the application. RegExp supported -->
     <resources>
         
-        <resource url="(https?:\/\/.*\.(?:png|jpg))" />
+        <!-- <resource url="(https?:\/\/.*\.(?:png|jpg))" /> -->
+        <resource url="http://www.informaticahack.es(.*)" />
+        <resource url="https://avatars2.githubusercontent.com(.*)" />
         <resource url="^https?\:\/\/html5demos\.com\/assets\/(.*)+\.mp4" />
-        <resource url="^https?\:\/\/(.*)+.google.(.*)" />
+        <resource url="^https?\:\/\/([A-Za-z0-9.]*).google.(.*)" />
     </resources>
 </io-config>

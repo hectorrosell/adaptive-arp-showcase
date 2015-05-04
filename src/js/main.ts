@@ -8,7 +8,7 @@ var time:Date;
      * @param message Message to be logged
      */
     function log(level:Adaptive.ILoggingLogLevel, message:string):void {
-        console.log(message);
+        //console.log(message);
         Adaptive.AppRegistryBridge.getInstance().getLoggingBridge().logLevelCategoryMessage(level, "APPLICATION", message);
     }
 
@@ -89,28 +89,28 @@ $(document).ready(function () {
     // Asynchronous Method (callback) (getContacts)
     var callback:Adaptive.IContactResultCallback = new Adaptive.ContactResultCallback(
         function onError(error:Adaptive.IContactResultCallbackError) {
-            console.log(JSON.stringify(error));
-            log(Adaptive.ILoggingLogLevel.Error, error.toString());
+            //console.log(JSON.stringify(error));
+            //log(Adaptive.ILoggingLogLevel.Error, error.toString());
             $('#contacts-error').html("ERROR: " + error.toString()).show();
             $("#contacts-lists").listview('refresh');            
         },
         function onResult(contacts:Adaptive.Contact[]) {
-            log(Adaptive.ILoggingLogLevel.Debug,JSON.stringify(contacts));
+            //log(Adaptive.ILoggingLogLevel.Debug,JSON.stringify(contacts));
             parseContacts(contacts);
             $("#contacts-lists").listview('refresh');
             
             
         },
         function onWarning(contacts:Adaptive.Contact[], warning:Adaptive.IContactResultCallbackWarning) {
-            console.log(JSON.stringify(warning));
-            log(Adaptive.ILoggingLogLevel.Warn,JSON.stringify(contacts));
+            //console.log(JSON.stringify(warning));
+            //log(Adaptive.ILoggingLogLevel.Warn,JSON.stringify(contacts));
             $('#contacts-warning').html("WARNING: " + warning.toString()).show();
             parseContacts(contacts);
             $("#contacts-lists").listview('refresh');            
         }
     );
     time = new Date();
-    contact.getContactsForFields(callback, [Adaptive.IContactFieldGroup.PersonalInfo, Adaptive.IContactFieldGroup.ProfessionalInfo]);
+    contact.getContactsForFields(callback, [Adaptive.IContactFieldGroup.PersonalInfo, Adaptive.IContactFieldGroup.ProfessionalInfo, Adaptive.IContactFieldGroup.Addresses, Adaptive.IContactFieldGroup.Emails, Adaptive.IContactFieldGroup.Phones, Adaptive.IContactFieldGroup.Socials, Adaptive.IContactFieldGroup.Tags, Adaptive.IContactFieldGroup.Websites]);
 
     function parseContacts(contacts:Adaptive.Contact[]):void {
         $('#contacts-info').html("tooks "+(new Date().getTime()-time.getTime())+" ms ["+contacts.length+"]").show();
