@@ -28,8 +28,20 @@ $(document).ready(function () {
         }
     );
 
+    // Cookies demo http://httpbin.org/cookies
+    var cookiesSet:Adaptive.ServiceToken = service.getServiceTokenByUri("http://httpbin.org/cookies/set");
+    req = service.getServiceRequest(cookiesSet);
+    var params:Adaptive.ServiceRequestParameter[] = [];
+    params.push(new Adaptive.ServiceRequestParameter("name1", "value1"));
+    req.setQueryParameters(params);
+    service.invokeService(req, callback);
+
+    /*var cookiesGet:Adaptive.ServiceToken = service.getServiceTokenByUri("http://httpbin.org/cookies");
+    req = service.getServiceRequest(cookiesGet);
+    service.invokeService(req, callback);*/
+
     // Geonames demo
-    var geonames:Adaptive.ServiceToken = service.getServiceTokenByUri("http://api.geonames.org/postalCodeLookupJSON");
+    /*var geonames:Adaptive.ServiceToken = service.getServiceTokenByUri("http://api.geonames.org/postalCodeLookupJSON");
     req = service.getServiceRequest(geonames);
 
     var params:Adaptive.ServiceRequestParameter[] = [];
@@ -38,7 +50,7 @@ $(document).ready(function () {
     params.push(new Adaptive.ServiceRequestParameter("username", "ferran.vila"));
     req.setQueryParameters(params);
 
-    service.invokeService(req, callback);
+    service.invokeService(req, callback);*/
 
     // Internal AJAX call
     $('#internal-ajax').click(function () {

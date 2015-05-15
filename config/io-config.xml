@@ -41,7 +41,7 @@
                 <path path="/cookies" type="RestJson">
                     <method method="Get"/>
                 </path>
-                <path path="/cookies/set?name=value" type="RestJson">
+                <path path="/cookies/set" type="RestJson">
                     <method method="Get"/>
                 </path>
                 <path path="/delay/\d\b" type="RestJson">
